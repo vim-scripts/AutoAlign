@@ -1,0 +1,139 @@
+*autoalign.txt*		Automatic Alignment		Jan 24, 2005
+
+Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
+(remove NOSPAM from Campbell's email first)
+
+==============================================================================
+1. Contents				*autoalign* *autoalign-contents*
+
+    1. Contents.................: |autoalign-contents|
+    2. Installing...............: |autoalign-install|
+    3. Alignment Manual.........: |autoalign-manual|
+    4. AutoAlign History........: |autoalign-history|
+
+==============================================================================
+
+2. Installing AutoAlign					*autoalign-install*
+
+    AutoAlign needs the following files under the .vim/ directory (Unix) or
+    under the vimfiles\ directory (Windows).  These files can be placed
+    properly by
+
+        * putting the compressed archives (Align.tar.gz, AutoAlign.tar.gz)
+	  into your .vim/ (Unix) or vimfiles\ (Windows) directory
+	* decompressing them  (ex. gunzip Align.tar.gz)
+	* de-archiving them   (ex. tar -oxvf Align.tar)
+
+    The Align/Alignmaps utilities are available from either
+        http://vim.sourceforge.net/scripts/script.php?script_id=294
+        http://mysite.verizon.net/astronaut/vim/textab.html
+    which will provide you with:
+        plugin/Align.vim
+        plugin/AlignMaps.vim
+
+    The AutoAlign filetype plugins are available from
+        http://vim.sourceforge.net/scripts/script.php?script_id=884
+    which will provide you with:
+        plugin/cecutil.vim
+        ftplugin/bib/AutoAlign.vim
+        ftplugin/c/AutoAlign.vim
+        ftplugin/cpp/AutoAlign.vim
+        ftplugin/maple/AutoAlign.vim
+        ftplugin/tex/AutoAlign.vim
+        ftplugin/vim/AutoAlign.vim
+
+    In order to make help available while using vim for AutoAlign:
+        vim
+        :helptags ~/.vim/doc                 <-- Unix
+        :helptags (wherever)/vimfiles/doc    <-- Windows
+        :q
+
+    To enable plugins and filetype plugins generally, including this
+    one, have the following in your <.vimrc> file:
+        "  Initialize: {{{1
+        set nocp
+        if version >= 600
+        filetype plugin indent on
+        endif
+
+
+==============================================================================
+
+3. AutoAlign Manual						*autoalign-man*
+
+    The AutoAlign filetype plugins operate with vim in insert mode.  They
+    apply appropriate Align/AlignMaps to the most recent contiguous region,
+    thereby keeping such things as "=" aligned.  See |align| and |alignmaps|.
+
+        :AA   - toggles AutoAlign on and off
+
+    The mark 'a is used by AutoAlign to indicate where the start of the
+    automatic alignment region begins.  Changing 'a to some other place
+    will also stop AutoAlign from operating on that region.  One may
+    temporarily suppress AutoAlignment that way.
+
+              Language  AutoAlignment   AutoAlignment
+                            Trigger        Taken On
+              --------  -------------   -------------
+                bib           =               =
+                c             =               =
+                cpp           =               =
+                              <              <<
+                              >              >>
+                maple         =              :=
+                tex           \            & and \\
+                vim           =               =
+
+    The AutoAlignment trigger character invokes a call to the appropriate
+    filetype's AutoAlign.  Only when:
+
+    * the current line matches a filetype specific pattern (to avoid
+    aligning <= >= == etc)
+
+    * the b:autoalign_vim variable records the first line which
+    satisfied the filetype specific pattern in the current
+    region.  If it matches the mark ('a)'s line, then AutoAlignment
+    will occur.  Thus the user can temporarily disable AutoAlignment
+    on the current region merely by changing where the mark 'a is
+    set to.
+
+    * Although frequently the trigger character is also used in
+    the alignment, sometimes a longer pattern is used (ex. maple's
+    :=) for alignment.
+
+    The AutoAlign plugin is fairly trivial to use -- just type.  Alignment
+    will occur for those patterns/characters automatically.
+
+    FILETYPE PATTERNS
+
+    bib    ^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\==
+    c      ^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\==
+    cpp    ^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\==
+    cpp    \(<<\|>>\)
+    maple  :=
+    tex    ^\([^&]*&\)\+[^&]*\\\{2}
+    vim    ^\s*let\>.*=
+
+
+==============================================================================
+
+4. AutoAlign History					*autoalign-history*
+
+    5 : Jan 24, 2005 :* first release of AutoAlign using vim's user-help.
+                      * using g:mapleader instead of a built-in backslash to
+                        access AlignMaps
+                      * map and function changed to allow use of "." to
+                        repeat entry of =... expressions.
+    4, Jul 02, 2004 : * see |i_ctrl-g_u| -- breaks undo sequence at every align
+    3, Mar 03, 2004 : * autoalign not taken if a no-pattern line is
+                        in-between the keepalign line and the current line
+    2               : * b:autoalign==0: turns autoalign off
+                        b:autoalign==1: turns autoalign back on
+                      * 'a now used during autoalign, and AlignMap's \t=
+                        If user changes 'a, then AutoAlign recognizes that
+                        it is not to keep aligning
+                      * The :AA command can be used to toggle AutoAlign
+    1               : * The Epoch
+
+==============================================================================
+vim:tw=78:ts=8:ft=help

@@ -1,0 +1,32 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=884
+
+[AutoAlign V12 AND LATER REQUIRES VIMBALL V18 OR LATER TO UNPACK]
+                               [AutoAlign also requires vimscript#294]
+
+ Note:  this plugin is not a right-margin justification tool; see vimscript#177 for that
+
+AutoAlign is currently composed of one regular plugin and six ftplugins.  As you type statements such as (for vim)
+
+	let xyz= 1
+	let x= 2
+
+the ftplugin/vim/AutoAlign script will call upon the Align command to line up those equal signs, resulting in aligned equal signs (which can't be usefully shown here due to browsers' use of proportional fonts).
+
+Similarly the c ftplugin will do so for
+
+	x= 3;
+	xy[0]= 4;
+	abc->def= 5;
+
+	one= 2;
+
+(it only applies to what you're currently typing, it doesn't take any previously existing lines into account).  For c++,
+= signs, <<, and >> operators get aligned.  For maple, :=.  
+
+Former Version Notes:
+   5: AutoAlign maps and functions changed to allow use of "." to repeat entry of =... expressions.  Uses g:mapleader instead of a built-in backslash to access AlignMaps.  First release of AutoAlign using vim's user-help. 
+   4: Now supports: bib c cpp tex vim. AutoAlign now breaks the undo sequence at every align operation, so one undo undoes the entire AutoAlign.  Bugfix: (with virtual edit) has been fixed (when backspacing over ==).  Bugfix: unwanted beeping due to virtual edit being off fixed
+   3: Now supported: bib c tex vim.  :AA toggles AutoAlign on and off. AutoAlign now auto-aligns only blocks of alignable text.  cecutil.vim included (SaveMark, SaveWinPosn, etc)
+
+(alpha/beta version available at http://mysite.verizon.net/astronaut/vim/index.html#AUTOALIGN)
+
