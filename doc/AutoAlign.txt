@@ -1,7 +1,11 @@
-*autoalign.txt*		Automatic Alignment		Jan 24, 2005
+*autoalign.txt*		Automatic Alignment		Nov 28, 2005
 
 Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
 (remove NOSPAM from Campbell's email first)
+Copyright: (c) 2004-2005 by Charles E. Campbell, Jr.	*autoalign-copyright*
+           The VIM LICENSE applies to AutoAlign.vim and AutoAlign.txt
+           (see |copyright|) except use "AutoAlign" instead of "Vim"
+	   No warranty, express or implied.  Use At-Your-Own-Risk.
 
 ==============================================================================
 1. Contents				*autoalign* *autoalign-contents*
@@ -9,68 +13,72 @@ Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
     1. Contents.................: |autoalign-contents|
     2. Installing...............: |autoalign-install|
     3. Alignment Manual.........: |autoalign-manual|
-    4. AutoAlign History........: |autoalign-history|
+    4. AutoAlign Internals......: |autoalign-internals|
+    5. AutoAlign History........: |autoalign-history|
 
 ==============================================================================
-
 2. Installing AutoAlign					*autoalign-install*
 
-    AutoAlign needs the following files under the .vim/ directory (Unix) or
-    under the vimfiles\ directory (Windows).  These files can be placed
-    properly by
+	1. AutoAlign needs the Align/AlignMaps utilities
+	   which are available from either:
+>
+		http://vim.sourceforge.net/scripts/script.php?script_id=294
+		http://mysite.verizon.net/astronaut/vim/textab.html
+<
+	  a) Put the compressed archive (Align.tar.gz) in your
+	     .vim (Unix) or vimfiles\ (Windows) directory
+	  b) Decompress it:  gunzip Align.tar.gz
+	  c) De-archive it:  tar -oxvf Align.tar
 
-        * putting the compressed archives (Align.tar.gz, AutoAlign.tar.gz)
-	  into your .vim/ (Unix) or vimfiles\ (Windows) directory
-	* decompressing them  (ex. gunzip Align.tar.gz)
-	* de-archiving them   (ex. tar -oxvf Align.tar)
 
-    The Align/Alignmaps utilities are available from either
-        http://vim.sourceforge.net/scripts/script.php?script_id=294
-        http://mysite.verizon.net/astronaut/vim/textab.html
-    which will provide you with:
-        plugin/Align.vim
-        plugin/AlignMaps.vim
+	2. AutoAlign is composed of a plugin and several
+	   ftplugins.  It is available from:
+>
+        	http://vim.sourceforge.net/scripts/script.php?script_id=884
+<
+	3. Decompress it:  gunzip Align.tar.gz
+	4. De-archive it: tar -oxvf Align.tar
+	5. Steps 3 and 4 will provide you with:
+>
+	        plugin/cecutil.vim
+	        ftplugin/bib/AutoAlign.vim
+	        ftplugin/c/AutoAlign.vim
+	        ftplugin/cpp/AutoAlign.vim
+	        ftplugin/maple/AutoAlign.vim
+	        ftplugin/tex/AutoAlign.vim
+	        ftplugin/vim/AutoAlign.vim
+<
+	6. In order to make help available while using vim for AutoAlign:
+>
+		vim
+		:helptags ~/.vim/doc                 <-- Unix
+		:helptags (wherever)/vimfiles/doc    <-- Windows
+		:q
+<
 
-    The AutoAlign filetype plugins are available from
-        http://vim.sourceforge.net/scripts/script.php?script_id=884
-    which will provide you with:
-        plugin/cecutil.vim
-        ftplugin/bib/AutoAlign.vim
-        ftplugin/c/AutoAlign.vim
-        ftplugin/cpp/AutoAlign.vim
-        ftplugin/maple/AutoAlign.vim
-        ftplugin/tex/AutoAlign.vim
-        ftplugin/vim/AutoAlign.vim
-
-    In order to make help available while using vim for AutoAlign:
-        vim
-        :helptags ~/.vim/doc                 <-- Unix
-        :helptags (wherever)/vimfiles/doc    <-- Windows
-        :q
-
-    To enable plugins and filetype plugins generally, including this
-    one, have the following in your <.vimrc> file:
-        "  Initialize: {{{1
-        set nocp
-        if version >= 600
-        filetype plugin indent on
-        endif
-
+	7. To enable plugins and filetype plugins generally, including
+	   AutoAlign, have the following in your <.vimrc> file:
+>
+		"  Initialize: {{{1
+		set nocp
+		if version >= 600
+		 filetype plugin indent on
+		endif
+<
 
 ==============================================================================
-
 3. AutoAlign Manual						*autoalign-man*
 
-    The AutoAlign filetype plugins operate with vim in insert mode.  They
+    The AutoAlign filetype plugins operate while vim is in insert mode.  They
     apply appropriate Align/AlignMaps to the most recent contiguous region,
     thereby keeping such things as "=" aligned.  See |align| and |alignmaps|.
 
         :AA   - toggles AutoAlign on and off
 
     The mark 'a is used by AutoAlign to indicate where the start of the
-    automatic alignment region begins.  Changing 'a to some other place
-    will also stop AutoAlign from operating on that region.  One may
-    temporarily suppress AutoAlignment that way.
+    automatic alignment region begins.  Changing 'a to some other place will
+    also stop AutoAlign from operating on that region.  One may temporarily
+    suppress AutoAlignment that way.
 
               Language  AutoAlignment   AutoAlignment
                             Trigger        Taken On
@@ -102,28 +110,100 @@ Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
     :=) for alignment.
 
     The AutoAlign plugin is fairly trivial to use -- just type.  Alignment
-    will occur for those patterns/characters automatically.
+    will occur for the following patterns automatically.  These patterns
+    are stored in b:autoalign_reqdpat1, b:autoalign_reqdpat2, etc.
 
     FILETYPE PATTERNS
 
     bib    ^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\==
-    c      ^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\==
+    c      ^\(\s*\*\{0,}\h\w*\%(\[\%(\d\+\|\h\w*\)]\)\{0,}\%(->\|\.\)\=\)\+\s*[-+*/^|%]\==
     cpp    ^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\==
-    cpp    \(<<\|>>\)
+    cpp    <<
+    cpp    >>
     maple  :=
-    tex    ^\([^&]*&\)\+[^&]*\\\{2}
+    matlab \%(^.*=\)\&\%(^\s*\%(\%(if\>\|elseif\>\|while\>\|for\>\)\@!.\)*$
+    tex    ^\([^&]*&\)\+[^&]*\\\{2
     vim    ^\s*let\>.*=
+
+    AutoAlign looks backwards from the current line, searching for the first
+    preceding line _not_ containing the pattern.  It uses b:autoalign_notpat1,
+    b:autoalign_notpat2, etc for this.  If the "not pattern" has moved since
+    the mark ('a) was made, AutoAlign will start aligning from the current
+    line.
 
 
 ==============================================================================
+4. AutoAlign Internals					*autoalign-internals*
 
-4. AutoAlign History					*autoalign-history*
+    AutoAlign is triggered to operate during insert mode when a special
+    character (such as "=") is encountered using an inoremap.  Each ftplugin
+    specifies its own triggers.  The inoremap turns virtualedit off, calls
+    AutoAlign(), and then deletes the trigger character (which may have or may
+    not have moved) and then inserts it to keep the operation otherwise
+    transparent.
 
+    AutoAlign attempts to perform its automatic alignment on an "AutoAlign
+    region".  Alignment, of course, is performed over that region.  The idea
+    is to start an AutoAlign region upon receipt of a trigger character and
+    a matching required pattern; subsequently, alignment is done over the
+    AutoAlign region is active and whenever the region has more than one line
+    in it.
+
+    Such a region begins with the presence of a required pattern.  That first
+    line is also marked with mark-a ('a).  If the mark 'a is moved, then the
+    AutoAlign region is terminated.  There are several ways that an AutoAlign
+    region is terminated; see below.
+
+    Associated with each trigger character are three or four patterns.  Also,
+    each trigger character inoremap is to have an associated count, referred
+    to as "#" below.
+>
+    b:autoalign_reqdpat#
+<       This pattern is required for AutoAlign to consider that an AutoAlign
+	region has started.  If a positive # is passed to AutoAlign(), then
+	the required pattern is needed to allow the AutoAlign region to
+	continue whenever a trigger character is encountered.  A negative #, a
+	trigger character, and a failed match to b:autoalign_reqdpat# will
+	terminate the AutoAlign region.
+>
+    b:autoalign_notpat#
+<       This pattern must match just before the AutoAlign region starts.  It
+	is used to search before the current line.  If the non-pattern
+	matching line is not the same as it was when the AutoAlign region
+	began, then the AutoAlign region is terminated.
+>
+    b:autoalign_suspend#
+<       This pattern is optional; if it matches, the AutoAlign region is
+        terminated.  The fplugin/html/AutoAlign.vim script uses </table>,
+	for example, to terminate table aligning.
+>
+    b:autoalign_cmd#
+<       This is the command used to invoke alignment on the AutoAlign region.
+
+    Of course, the :AA command is also available to turn AutoAlign off.
+
+
+==============================================================================
+5. AutoAlign History					*autoalign-history*
+
+    7 : Mar 31, 2005 :* supports html
+		      * b:autoalign_suspend# for suspend-alignment pattern
+		  	implemented, along with using AutoAlign(-#) to avoid
+			having a reqdpat failure doing an AutoAlign suspension.
+			The absolute value of # is used to refer to
+			b:autoalign_reqdpat#, b:autoalign_notpat#, and
+			b:autoalign_suspend#.
+        Apr 22, 2005  * sanity check included to prevent an attempt to access
+			an undefined variable (b:autoalign_reqdpat{i})
+    6 : Mar 30, 2005 :* AutoAlign is split into a plugin containing the
+			majority of vimscript; the supported ftplugins
+			contain the invoking imaps and pattern definitions
+			that the plugin uses.
     5 : Jan 24, 2005 :* first release of AutoAlign using vim's user-help.
-                      * using g:mapleader instead of a built-in backslash to
-                        access AlignMaps
-                      * map and function changed to allow use of "." to
-                        repeat entry of =... expressions.
+		      * using g:mapleader instead of a built-in backslash to
+			access AlignMaps
+		      * map and function changed to allow use of "." to
+			repeat entry of =... expressions.
     4, Jul 02, 2004 : * see |i_ctrl-g_u| -- breaks undo sequence at every align
     3, Mar 03, 2004 : * autoalign not taken if a no-pattern line is
                         in-between the keepalign line and the current line

@@ -1,8 +1,8 @@
 " cecutil.vim : save/restore window position
 "               save/restore mark position
 "  Author:	Charles E. Campbell, Jr.
-"  Version:	7	NOT RELEASED
-"  Date:	Mar 10, 2005
+"  Version:	10
+"  Date:	Nov 22, 2005
 "
 "  Saving Restoring Destroying Marks: {{{1
 "       call SaveMark(markname)       let savemark= SaveMark(markname)
@@ -18,12 +18,18 @@
 "       commands: SWP RWP
 "
 " GetLatestVimScripts: 1066 1 :AutoInstall: cecutil.vim
+"
+" You believe that God is one. You do well. The demons also {{{1
+" believe, and shudder. But do you want to know, vain man, that
+" faith apart from works is dead?  (James 2:19,20 WEB)
 
-" usual multi-load preventive {{{1
+" Load Once: {{{1
 if &cp || exists("g:loaded_cecutil")
  finish
 endif
-let g:loaded_cecutil= "v7"
+let g:loaded_cecutil = "v10"
+let s:keepcpo        = &cpo
+set cpo&vim
 "DechoMsgOn
 
 " -----------------------
@@ -41,11 +47,11 @@ nmap <silent> <Plug>SaveWinPosn		:call SaveWinPosn()<CR>
 nmap <silent> <Plug>RestoreWinPosn	:call RestoreWinPosn()<CR>
 
 " Command Interface: {{{2
-com -nargs=? SWP	call SaveWinPosn(<args>)
-com -nargs=? RWP	call RestoreWinPosn(<args>)
-com -nargs=1 SM	call SaveMark(<args>)
-com -nargs=1 RM	call RestoreMark(<args>)
-com -nargs=1 DM	call DestroyMark(<args>)
+com -bar -nargs=? SWP	call SaveWinPosn(<q-args>)
+com -bar -nargs=? RWP	call RestoreWinPosn(<q-args>)
+com -bar -nargs=1 SM	call SaveMark(<q-args>)
+com -bar -nargs=1 RM	call RestoreMark(<q-args>)
+com -bar -nargs=1 DM	call DestroyMark(<q-args>)
 
 " ---------------------------------------------------------------------
 " SaveWinPosn: {{{1
@@ -64,16 +70,15 @@ fun! SaveWinPosn(...)
   if swwline > 0
    let savedposn= savedposn.":silent norm! ".swwline."\<c-y>\<cr>"
   endif
-  let savedposn = savedposn.":silent call cursor(".swline.",".swcol.")\<cr>"
-"  let savedposn = savedposn.":silent! norm! zO\<cr>"
   if swwcol > 0
-   let savedposn= savedposn.":silent norm! ".swwcol."zl\<cr>"
+   let savedposn= savedposn.":silent norm! 0".swwcol."zl\<cr>"
   endif
+  let savedposn = savedposn.":silent call cursor(".swline.",".swcol.")\<cr>"
 
   " save window position in
   " b:winposn_{iwinposn} (stack)
   " only if SaveWinPosn() not used
-  if a:0 == 0
+  if a:0 == 0 || a:1 == ""
    if !exists("b:iwinposn")
    	let b:iwinposn= 1
    else
@@ -82,7 +87,12 @@ fun! SaveWinPosn(...)
    let b:winposn{b:iwinposn}= savedposn
   endif
 
-"  call Dret("SaveWinPosn : b:winposn{".b:iwinposn."}[".b:winposn{b:iwinposn}."]")
+"  if exists("b:iwinposn")	 " Decho
+"   call Decho("b:winpos{".b:iwinposn."}[".b:winposn{b:iwinposn}."]")
+"  else                      " Decho
+"   call Decho("b:iwinposn doesn't exist")
+"  endif                     " Decho
+"  call Dret("SaveWinPosn [".savedposn."]")
   return savedposn
 endfun
 
@@ -91,7 +101,7 @@ endfun
 fun! RestoreWinPosn(...)
 "  call Dfunc("RestoreWinPosn() a:0=".a:0)
 
-  if a:0 == 0
+  if a:0 == 0 || a:1 == ""
    " use saved window position in b:winposn{b:iwinposn} if it exists
    if exists("b:iwinposn") && exists("b:winposn{b:iwinposn}")
 "   	call Decho("using stack b:winposn{".b:iwinposn."}<".b:winposn{b:iwinposn}.">")
@@ -249,7 +259,7 @@ endfun
 " DestroyMark: {{{1
 "   call DestroyMark("a")  -- destroys mark
 fun! DestroyMark(markname)
-"  call Dfunc("markname<".a:markname.">)")
+"  call Dfunc("DestroyMark(markname<".a:markname.">)")
   let markname= strpart(a:markname,0,1)
   if markname !~ '\a'
    " handles 'a -> a styles
@@ -292,5 +302,7 @@ endfun
 "endfun
 "com! -nargs=0 LWP	call ListWinPosn()
 
+let &cpo= s:keepcpo
+unlet s:keepcpo
 " ---------------------------------------------------------------------
 " vim: ts=4 fdm=marker
