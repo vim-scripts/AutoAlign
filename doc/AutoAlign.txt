@@ -1,8 +1,8 @@
-*autoalign.txt*		Automatic Alignment		Nov 28, 2005
+*autoalign.txt*		Automatic Alignment		Mar 16, 2006
 
 Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
 (remove NOSPAM from Campbell's email first)
-Copyright: (c) 2004-2005 by Charles E. Campbell, Jr.	*autoalign-copyright*
+Copyright: (c) 2004-2006 by Charles E. Campbell, Jr.	*autoalign-copyright*
            The VIM LICENSE applies to AutoAlign.vim and AutoAlign.txt
            (see |copyright|) except use "AutoAlign" instead of "Vim"
 	   No warranty, express or implied.  Use At-Your-Own-Risk.
@@ -186,34 +186,43 @@ Copyright: (c) 2004-2005 by Charles E. Campbell, Jr.	*autoalign-copyright*
 ==============================================================================
 5. AutoAlign History					*autoalign-history*
 
-    7 : Mar 31, 2005 :* supports html
-		      * b:autoalign_suspend# for suspend-alignment pattern
-		  	implemented, along with using AutoAlign(-#) to avoid
-			having a reqdpat failure doing an AutoAlign suspension.
-			The absolute value of # is used to refer to
-			b:autoalign_reqdpat#, b:autoalign_notpat#, and
-			b:autoalign_suspend#.
-        Apr 22, 2005  * sanity check included to prevent an attempt to access
-			an undefined variable (b:autoalign_reqdpat{i})
-    6 : Mar 30, 2005 :* AutoAlign is split into a plugin containing the
-			majority of vimscript; the supported ftplugins
-			contain the invoking imaps and pattern definitions
-			that the plugin uses.
-    5 : Jan 24, 2005 :* first release of AutoAlign using vim's user-help.
-		      * using g:mapleader instead of a built-in backslash to
-			access AlignMaps
-		      * map and function changed to allow use of "." to
-			repeat entry of =... expressions.
-    4, Jul 02, 2004 : * see |i_ctrl-g_u| -- breaks undo sequence at every align
-    3, Mar 03, 2004 : * autoalign not taken if a no-pattern line is
-                        in-between the keepalign line and the current line
-    2               : * b:autoalign==0: turns autoalign off
-                        b:autoalign==1: turns autoalign back on
-                      * 'a now used during autoalign, and AlignMap's \t=
-                        If user changes 'a, then AutoAlign recognizes that
-                        it is not to keep aligning
-                      * The :AA command can be used to toggle AutoAlign
-    1               : * The Epoch
+   10 : Mar 16, 2006 : using startinsert! to recommence editing
+                       AutoAlign only triggered when the trigger character
+		       is at the end of the current line being inserted.
+    9 : Mar 16, 2006 : seems to have stopped working with virtualedit off.
+                       Now works with virtualedit off or on.  If vim 7.0
+		       is in use, AutoAlign doesn't use SaveWinPosn()
+		       or RestoreWinPosn(), so it may work faster.
+    8 : Jan 18, 2006 : cecutil updated to use keepjumps
+                     * plugin/AutoAlign.vim was missing from distribution
+    7 : Mar 31, 2005 : supports html
+		     * b:autoalign_suspend# for suspend-alignment pattern
+		       implemented, along with using AutoAlign(-#) to avoid
+		       having a reqdpat failure doing an AutoAlign suspension.
+		       The absolute value of # is used to refer to
+		       b:autoalign_reqdpat#, b:autoalign_notpat#, and
+		       b:autoalign_suspend#.
+        Apr 22, 2005 * sanity check included to prevent an attempt to access
+		       an undefined variable (b:autoalign_reqdpat{i})
+    6 : Mar 30, 2005 : AutoAlign is split into a plugin containing the
+		       majority of vimscript; the supported ftplugins
+		       contain the invoking imaps and pattern definitions
+		       that the plugin uses.
+    5 : Jan 24, 2005 : first release of AutoAlign using vim's user-help.
+		     * using g:mapleader instead of a built-in backslash to
+		       access AlignMaps
+		     * map and function changed to allow use of "." to
+		       repeat entry of =... expressions.
+    4, Jul 02, 2004  : see |i_ctrl-g_u| -- breaks undo sequence at every align
+    3, Mar 03, 2004  : autoalign not taken if a no-pattern line is
+                       in-between the keepalign line and the current line
+    2                : b:autoalign==0: turns autoalign off
+                       b:autoalign==1: turns autoalign back on
+                     * 'a now used during autoalign, and AlignMap's \t=
+                       If user changes 'a, then AutoAlign recognizes that
+                       it is not to keep aligning
+                     * The :AA command can be used to toggle AutoAlign
+    1                : The Epoch
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help

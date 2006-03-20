@@ -1,12 +1,12 @@
 " AutoAlign: ftplugin support for vim
 " Author:    Charles E. Campbell, Jr.
-" Date:      Mar 31, 2005
-" Version:   7
+" Date:      Mar 16, 2006
+" Version:   10a	ASTRO-ONLY
 " ---------------------------------------------------------------------
-let b:didautoalign_vim = "v7"
+let b:didautoalign_vim = "v10a"
 
 "  overloading '=' to keep things lined up {{{1
-ino <silent> = =<ESC>:let b:autoalign_vekeep=&ve<bar>let &ve=""<bar>silent call AutoAlign(1)<bar>let &ve=b:autoalign_vekeep<bar>norm! x<cr>i=
+ino <silent> = =<c-o>:silent call AutoAlign(1)<cr>
 let b:autoalign_reqdpat1 = '^\s*let\>.*='
 let b:autoalign_notpat1  = '^[^=]\+$'
 if !exists("g:mapleader")

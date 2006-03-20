@@ -1,12 +1,12 @@
 " AutoAlign: ftplugin support for bib
 " Author:    Charles E. Campbell, Jr.
-" Date:      Mar 31, 2005
-" Version:   7
+" Date:      Mar 16, 2006
+" Version:   10a	ASTRO-ONLY
 " ---------------------------------------------------------------------
-let b:didautoalign_bib= "v7"
+let b:didautoalign_bib= "v10a"
 
 "  overloading '=' to keep things lined up {{{1
-ino <silent> = =<ESC>:let b:autoalign_vekeep=&ve<bar>let &ve=""<bar>silent call AutoAlign(1)<bar>let &ve=b:autoalign_vekeep<bar>norm! x<cr>i=
+ino <silent> = =<c-o>:silent call AutoAlign(1)<cr>
 let b:autoalign_reqdpat1= '^\(\s*\h\w*\(\[\d\+]\)\{0,}\(->\|\.\)\=\)\+\s*[-+*/^|%]\=='
 let b:autoalign_nopat1  = '^[^=]\+$'
 if !exists("g:mapleader")
