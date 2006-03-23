@@ -1,9 +1,9 @@
 " AutoAlign: ftplugin support for MatLab
 " Author:    Charles E. Campbell, Jr.
-" Date:      Mar 16, 2006
-" Version:   10a	ASTRO-ONLY
+" Date:      Mar 23, 2006
+" Version:   11	ASTRO-ONLY
 " ---------------------------------------------------------------------
-let b:didautoalign_matlab = "v10a"
+let b:loaded_autoalign_matlab = "v11"
 
 "  overloading '=' to keep things lined up {{{1
 ino <silent> = =<c-o>:silent call AutoAlign(1)<cr>

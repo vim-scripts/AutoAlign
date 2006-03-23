@@ -1,9 +1,9 @@
 " AutoAlign: ftplugin support for bib
 " Author:    Charles E. Campbell, Jr.
-" Date:      Mar 16, 2006
-" Version:   10a	ASTRO-ONLY
+" Date:      Mar 23, 2006
+" Version:   11	ASTRO-ONLY
 " ---------------------------------------------------------------------
-let b:didautoalign_bib= "v10a"
+let b:loaded_autoalign_bib= "v11"
 
 "  overloading '=' to keep things lined up {{{1
 ino <silent> = =<c-o>:silent call AutoAlign(1)<cr>

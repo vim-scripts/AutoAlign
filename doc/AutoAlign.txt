@@ -186,9 +186,16 @@ Copyright: (c) 2004-2006 by Charles E. Campbell, Jr.	*autoalign-copyright*
 ==============================================================================
 5. AutoAlign History					*autoalign-history*
 
+   11 : Mar 23, 2006 : v10 had debugging enabled; this one has debugging
+                       deactivated.
+		     * now decides to use startinsert vs startinsert!
+		       before the alignment by using the "atend" variable,
+		       which holds the result of testing whether the cursor
+		       is at the end-of-line or not.
    10 : Mar 16, 2006 : using startinsert! to recommence editing
                        AutoAlign only triggered when the trigger character
 		       is at the end of the current line being inserted.
+		     * works with ve=all and ve=  (see |'ve'|)
     9 : Mar 16, 2006 : seems to have stopped working with virtualedit off.
                        Now works with virtualedit off or on.  If vim 7.0
 		       is in use, AutoAlign doesn't use SaveWinPosn()
