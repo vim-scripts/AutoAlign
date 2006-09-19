@@ -1,9 +1,9 @@
 " AutoAlign: ftplugin support for vim
 " Author:    Charles E. Campbell, Jr.
-" Date:      Mar 23, 2006
-" Version:   11	ASTRO-ONLY
+" Date:      Sep 19, 2006
+" Version:   12
 " ---------------------------------------------------------------------
-let b:loaded_autoalign_vim = "v11"
+let b:loaded_autoalign_vim = "v12"
 
 "  overloading '=' to keep things lined up {{{1
 ino <silent> = =<c-o>:silent call AutoAlign(1)<cr>

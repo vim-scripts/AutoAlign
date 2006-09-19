@@ -1,7 +1,7 @@
 " AutoAlign.vim: a ftplugin for C
 " Author:	Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>-NOSPAM
-" Date:		Mar 23, 2006
-" Version:	10
+" Date:		Sep 19, 2006
+" Version:	12
 " GetLatestVimScripts: 884  1 :AutoInstall: AutoAlign.vim
 " GetLatestVimScripts: 294  1 :AutoInstall: Align.vim
 " GetLatestVimScripts: 1066 1 :AutoInstall: cecutil.vim
@@ -10,7 +10,7 @@
 if exists("b:didautoalign")
  finish
 endif
-let b:loaded_autoalign = "v10"
+let b:loaded_autoalign = "v12"
 let s:keepcpo      = &cpo
 set cpo&vim
 
@@ -25,7 +25,7 @@ endif
 "if !exists("*Decho")                  " Decho
 " silent! runtime plugin/Decho.vim     " Decho
 "endif                                 " Decho
-"DechoVarOn
+"DechoTabOn
 
 " ---------------------------------------------------------------------
 " Public Interface: AA toggles AutoAlign {{{1
@@ -66,23 +66,21 @@ fun! AutoAlign(i)
    else
     let nopatline = search(b:autoalign_notpat{i},'bWn')
    endif
-   let atend= col(".") >= col("$") - 1
 
 "   call Decho("nopatline=".nopatline." (using autoalign_notpat<".b:autoalign_notpat{i}.">)")
 "   call Decho("b:autoalign (".(exists("b:autoalign")? "exists" : "doesn't exist").")")
-"   call Decho("line('a)=".line("'a")." b:autoalign=".(exists("b:autoalign")? b:autoalign : -1)." curline=".curline." nopatline=".nopatline." atend=".atend)
+"   call Decho("line('a)=".line("'a")." b:autoalign=".(exists("b:autoalign")? b:autoalign : -1)." curline=".curline." nopatline=".nopatline)
 
    if exists("b:autoalign") && line("'a") == b:autoalign && b:autoalign < curline && nopatline < line("'a")
 "    call Decho("autoalign multi")
-"	call Decho("atend=".atend)
     exe "norm! i\<c-g>u\<esc>"
     exe b:autoalign_cmd{i}
-    if !atend
-     norm! h
-    endif
+	norm! lF=l
    else
     let b:autoalign= line(".")
     ka
+	norm! lF=l
+	startinsert
 "	call Decho("autoalign start")
    endif
 
@@ -101,15 +99,12 @@ fun! AutoAlign(i)
    endif
   endif
 
-  let &ve= vekeep
+  norm! lF=l
+  startinsert
+
+  " restore user options
   let &lz= lzkeep
-  if atend
-"   call Decho("using startinsert!: atend=".atend)
-   startinsert!
-  else
-"   call Decho("using startinsert: atend=".atend)
-   startinsert
-  endif
+  let &ve= vekeep
 
 "  call Dret("AutoAlign")
 endfun

@@ -1,4 +1,4 @@
-*autoalign.txt*		Automatic Alignment		Mar 16, 2006
+*autoalign.txt*		Automatic Alignment		Sep 19, 2006
 
 Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
 (remove NOSPAM from Campbell's email first)
@@ -186,6 +186,7 @@ Copyright: (c) 2004-2006 by Charles E. Campbell, Jr.	*autoalign-copyright*
 ==============================================================================
 5. AutoAlign History					*autoalign-history*
 
+   12 : Sep 19, 2006 : ftplugin/bib/AutoAlign.vim fixed
    11 : Mar 23, 2006 : v10 had debugging enabled; this one has debugging
                        deactivated.
 		     * now decides to use startinsert vs startinsert!

@@ -2,8 +2,8 @@
 "               save/restore mark position
 "               save/restore selected user maps
 "  Author:	Charles E. Campbell, Jr.
-"  Version:	15d	ASTRO-ONLY
-"  Date:	Mar 10, 2006
+"  Version:	15
+"  Date:	Apr 10, 2006
 "
 "  Saving Restoring Destroying Marks: {{{1
 "       call SaveMark(markname)       let savemark= SaveMark(markname)
@@ -28,7 +28,7 @@
 if &cp || exists("g:loaded_cecutil")
  finish
 endif
-let g:loaded_cecutil = "v15d"
+let g:loaded_cecutil = "v15"
 let s:keepcpo        = &cpo
 set cpo&vim
 "DechoVarOn
@@ -120,6 +120,8 @@ endfun
 " RestoreWinPosn: {{{1
 fun! RestoreWinPosn(...)
 "  call Dfunc("RestoreWinPosn() a:0=".a:0)
+"  call Decho("getline(1)<".getline(1).">")
+"  call Decho("line(.)=".line("."))
   if line(".") == 1 && getline(1) == ""
 "   call Dfunc("RestoreWinPosn : empty buffer")
    return ""
@@ -445,7 +447,7 @@ fun! RestoreUserMaps(suffix)
    let s:restoremap_{a:suffix}= substitute(s:restoremap_{a:suffix},'|\s*$','','e')
    if s:restoremap_{a:suffix} != ""
 "   	call Decho("exe ".s:restoremap_{a:suffix})
-    exe s:restoremap_{a:suffix}
+    exe "silent! ".s:restoremap_{a:suffix}
    endif
    unlet s:restoremap_{a:suffix}
   endif
