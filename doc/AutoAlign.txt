@@ -1,4 +1,4 @@
-*autoalign.txt*		Automatic Alignment		Sep 19, 2006
+*autoalign.txt*		Automatic Alignment		Oct 19, 2006
 
 Author:  Charles E. Campbell, Jr.  <NdrOchip@ScampbellPfamily.AbizM>
 (remove NOSPAM from Campbell's email first)
@@ -179,6 +179,9 @@ Copyright: (c) 2004-2006 by Charles E. Campbell, Jr.	*autoalign-copyright*
 >
     b:autoalign_cmd#
 <       This is the command used to invoke alignment on the AutoAlign region.
+>
+    b:autoalign_trigger#
+<	This variable holds the trigger character.
 
     Of course, the :AA command is also available to turn AutoAlign off.
 
@@ -186,6 +189,18 @@ Copyright: (c) 2004-2006 by Charles E. Campbell, Jr.	*autoalign-copyright*
 ==============================================================================
 5. AutoAlign History					*autoalign-history*
 
+   13 : Oct 19, 2006 : ftplugin/cpp/AutoAlign.vim fixed for < and >.
+                       Introduced b:autoalign_trigger# so AutoAlign
+		       can put cursor back where it belongs.
+		     * AutoAlign now pluginkiller immune
+	Mar 26, 2007 * AutoAlign's invocation of Align sometimes caused
+		       the cursor to jump to the first line rather than
+		       the current line (ex: for Maple's :=).  Fixed.
+	Aug 15, 2007 * Changed the imaps's right-hand-side to use,
+	               typically, =<c-r>=AutoAlign(#) instead of
+		       =<c-o>:silent call AutoAlign(#).
+		       Thanks to Antony Scriven!  Gets that "|.|"
+		       repeater working.
    12 : Sep 19, 2006 : ftplugin/bib/AutoAlign.vim fixed
    11 : Mar 23, 2006 : v10 had debugging enabled; this one has debugging
                        deactivated.
