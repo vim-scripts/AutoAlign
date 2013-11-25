@@ -28,5 +28,5 @@ Former Version Notes:
    4: Now supports: bib c cpp tex vim. AutoAlign now breaks the undo sequence at every align operation, so one undo undoes the entire AutoAlign.  Bugfix: (with virtual edit) has been fixed (when backspacing over ==).  Bugfix: unwanted beeping due to virtual edit being off fixed
    3: Now supported: bib c tex vim.  :AA toggles AutoAlign on and off. AutoAlign now auto-aligns only blocks of alignable text.  cecutil.vim included (SaveMark, SaveWinPosn, etc)
 
-(alpha/beta version available at http://mysite.verizon.net/astronaut/vim/index.html#AUTOALIGN)
+(alpha/beta version available at http://www.drchip.org/astronaut/vim/index.html#AUTOALIGN)
 
